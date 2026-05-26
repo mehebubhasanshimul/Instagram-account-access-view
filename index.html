@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Accounts Center Clone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f1f2f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        /* Mobile Device Simulator Container */
+        .phone-container {
+            width: 100%;
+            max-width: 412px;
+            height: 880px;
+            background-color: #ffffff;
+            border-radius: 36px;
+            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.15);
+            overflow-y: auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 4px solid #222;
+        }
+
+        .phone-container::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        .page {
+            display: none;
+            padding: 20px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .active {
+            display: block;
+        }
+
+        /* ==================== PAGE 1: INPUT FORM ==================== */
+        #page1 {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #ffffff;
+            height: 100%;
+        }
+
+        #page1.active {
+            display: flex;
+        }
+
+        .instagram-logo {
+            width: 75px;
+            height: 75px;
+            margin-bottom: 35px;
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 42px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1c1e21;
+            font-size: 14px;
+        }
+
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #ccd0d5;
+            border-radius: 12px;
+            outline: none;
+            font-size: 16px;
+            background: #f5f6f7;
+            transition: all 0.2s;
+        }
+
+        .form-group input[type="text"]:focus {
+            border-color: #0064e0;
+            background: #fff;
+            box-shadow: 0 0 0 2px rgba(0,100,224,0.15);
+        }
+
+        .file-upload-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: #f5f6f7;
+            border: 2px dashed #ccd0d5;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            color: #606770;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .file-upload-btn:hover {
+            background-color: #ebedf0;
+        }
+
+        #imageInput {
+            display: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #0064e0;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(0,100,224,0.2);
+            transition: background 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056c2;
+        }
+
+        /* ==================== PAGE 2: SCREENSHOT TARGET ==================== */
+        #screenshot-target {
+            background-color: #ffffff;
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Original Phone Status Bar Cloned */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 18px 4px 18px;
+            background-color: #ffffff;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #000000;
+        }
+
+        .status-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-left i {
+            font-size: 12px;
+        }
+
+        .status-right {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+        }
+
+        .status-right span {
+            font-weight: 700;
+            margin-left: 2px;
+        }
+
+        /* Top Header Area */
+        .meta-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 18px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .meta-header .close-icon {
+            font-size: 22px;
+            color: #1c1e21;
+            cursor: pointer;
+            position: absolute;
+            left: 18px;
+        }
+
+        .meta-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-weight: 700;
+            color: #1c1e21;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .meta-brand img {
+            width: 26px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .center-title {
+            font-size: 23px;
+            font-weight: 700;
+            color: #1c1e21;
+            text-align: center;
+            margin-bottom: 12px;
+            padding: 0 20px;
+            letter-spacing: -0.3px;
+        }
+
+        .center-desc {
+            font-size: 13.5px;
+            color: #1c1e21;
+            text-align: center;
+            line-height: 1.45;
+            margin-bottom: 26px;
+            padding: 0 16px;
+        }
+
+        .center-desc a {
+            color: #0064e0;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Accounts Profile Row Option Box */
+        .profile-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 16px;
+            background: #ffffff;
+            border: 1px solid #e4e6eb;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 0 16px 18px 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .profile-img-container {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #f0f2f5;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #e4e6eb;
+        }
+
+        .profile-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-text .main-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1c1e21;
+        }
+
+        .profile-text .sub-text {
+            font-size: 13px;
+            color: #65676b;
+            margin-top: 3px;
+        }
+
+        /* Settings List Design */
+        .settings-list {
+            display: flex;
+            flex-direction: column;
+            padding: 0 16px;
+        }
+
+        .settings-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 8px;
+            border-radius: 12px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .settings-item-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: #1c1e21;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .settings-item-left i {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+            color: #1c1e21;
+        }
+
+        .arrow-icon {
+            color: #8c939d;
+            font-size: 13px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #e4e6eb;
+            margin: 10px 8px;
+        }
+
+        /* Bottom Grid Section */
+        .more-meta-title {
+            font-size: 15.5px;
+            font-weight: 700;
+            color: #1c1e21;
+            margin: 15px 16px 14px 16px;
+        }
+
+        .meta-cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 0 16px 20px 16px;
+        }
+
+        .meta-card {
+            border: 1px solid #e4e6eb;
+            border-radius: 18px;
+            padding: 16px;
+            cursor: pointer;
+            background: #fff;
+        }
+
+        .card-icon-blue {
+            color: #0064e0;
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .card-icon-glass {
+            color: #0064e0;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .card-text {
+            font-size: 14.5px;
+            font-weight: 600;
+            color: #1c1e21;
+        }
+
+        /* Bottom Fixed Navigation Bar Simulation */
+        .nav-bar-simulation {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 15px 0 12px 0;
+            background: #ffffff;
+            border-top: 1px solid #f0f2f5;
+        }
+
+        .nav-bar-simulation div {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #8c939d;
+            border-radius: 4px;
+        }
+        .nav-bar-simulation .circle-nav {
+            border-radius: 50%;
+            width: 19px;
+            height: 19px;
+        }
+        .nav-bar-simulation .back-nav {
+            border: none;
+            border-left: 2.5px solid #8c939d;
+            border-bottom: 2.5px solid #8c939d;
+            transform: rotate(45deg);
+            width: 12px;
+            height: 12px;
+            border-radius: 0;
+            margin-left: 5px;
+        }
+
+        /* Download Floating/Action Button styling outside screenshot target */
+        .action-area {
+            padding: 0 16px 20px 16px;
+            background: #ffffff;
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #22c55e;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(34,197,94,0.25);
+            transition: background 0.2s;
+        }
+
+        .download-btn:hover {
+            background-color: #16a34a;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-container">
+        
+        <div id="page1" class="page active">
+            <div class="instagram-logo">
+                <i class="fab fa-instagram"></i>
+            </div>
+            
+            <div class="form-group">
+                <label for="username">Profile Username</label>
+                <input type="text" id="username" placeholder="Example: m_hasan_shimul" autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label>Choose Profile Picture</label>
+                <label for="imageInput" class="file-upload-btn" id="uploadLabel">
+                    <i class="fas fa-image" style="margin-right: 6px;"></i> Select Gallery Image
+                </label>
+                <input type="file" id="imageInput" accept="image/*">
+            </div>
+
+            <button class="submit-btn" onclick="generateProfile()">Create UI Screenshot</button>
+        </div>
+
+        <div id="page2" class="page" style="padding: 0;">
+            
+            <div id="screenshot-target">
+                
+                <div class="status-bar">
+                    <div class="status-left">
+                        <span>1:04</span>
+                        <i class="fab fa-whatsapp"></i>
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <div class="status-right">
+                        <i class="fas fa-volume-mute"></i>
+                        <span>VoLTE <sub style="font-size: 7px; vertical-align: super;">1</sub></span>
+                        <span style="font-size: 8px;">4G <i class="fas fa-signal"></i></span>
+                        <span style="font-size: 8px;">4G+ <i class="fas fa-signal"></i></span>
+                        <i class="fas fa-battery-three-quarters"></i>
+                        <span>89</span>
+                    </div>
+                </div>
+
+                <div class="meta-header">
+                    <i class="fas fa-times close-icon" onclick="goBack()"></i>
+                    <div class="meta-brand">
+                        <img src="http://googleusercontent.com/image_collection/image_retrieval/5199593457437844421_0" alt="Meta Link">
+                        <span>Meta</span>
+                    </div>
+                </div>
+
+                <div class="center-title">Accounts Center</div>
+                <div class="center-desc">
+                    Manage your connected experiences and account settings across Meta technologies like Facebook, Instagram and Meta Horizon. <a href="#">Learn more</a>
+                </div>
+
+                <div class="profile-section">
+                    <div class="profile-info">
+                        <div class="profile-img-container">
+                            <img id="outputImage" src="" alt="User Avatar">
+                        </div>
+                        <div class="profile-text">
+                            <div class="main-name" id="outputName">Username</div>
+                            <div class="sub-text">3 profiles</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right arrow-icon"></i>
+                </div>
+
+                <div class="settings-list">
+                    <div class="settings-item">
+                        <div class="settings-item-left">
+                            <i class="shield-icon fas fa-shield-alt"></i> Password and security
+                        </div>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="settings-item-left">
+                            <i class="fas fa-project-diagram" style="font-size:15px;"></i> Connected experiences
+                        </div>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="settings-item-left">
+                            <i class="far fa-address-card"></i> Your information and permissions
+                        </div>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="settings-item-left">
+                            <i class="fas fa-bullhorn"></i> Ad preferences
+                        </div>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="settings-item-left">
+                            <i class="far fa-credit-card"></i> Meta Pay
+                        </div>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="settings-item-left">
+                            <i class="fas fa-dollar-sign" style="font-size:17px; padding-left:4px;"></i> Subscriptions
+                        </div>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="settings-item">
+                        <div class="settings-item-left">
+                            <i class="far fa-user-circle"></i> Manage accounts
+                        </div>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    </div>
+                </div>
+
+                <div class="more-meta-title">More from Meta</div>
+                <div class="meta-cards-grid">
+                    <div class="meta-card">
+                        <i class="fas fa-badge-check fas fa-check-circle card-icon-blue"></i>
+                        <div class="card-text">Meta Verified</div>
+                    </div>
+                    <div class="meta-card">
+                        <i class="fas fa-glasses card-icon-glass"></i>
+                        <div class="card-text">AI Glasses</div>
+                    </div>
+                </div>
+
+                <div class="nav-bar-simulation">
+                    <div class="back-nav"></div>
+                    <div class="circle-nav"></div>
+                    <div></div>
+                </div>
+
+            </div> <div class="action-area">
+                <button class="download-btn" onclick="takeHighResCapture()">
+                    <i class="fas fa-download"></i> Download Full Image
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const uploadLabel = document.getElementById('uploadLabel');
+        let base64String = "";
+
+        // Selection Listener
+        imageInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                uploadLabel.innerHTML = `<i class="fas fa-check-double" style="color:#22c55e;"></i> Image Uploaded`;
+                uploadLabel.style.borderColor = "#22c55e";
+                uploadLabel.style.color = "#22c55e";
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    base64String = e.target.result;
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        // Switch & Render
+        function generateProfile() {
+            const userInp = document.getElementById('username').value.trim();
+
+            if (!userInp) {
+                alert("Please type a Profile Username first!");
+                return;
+            }
+            if (!base64String) {
+                alert("Please add a profile picture!");
+                return;
+            }
+
+            // Sync text and image nodes
+            document.getElementById('outputName').innerText = userInp;
+            document.getElementById('outputImage').src = base64String;
+
+            // Trigger Transition View
+            document.getElementById('page1').classList.remove('active');
+            document.getElementById('page2').classList.add('active');
+        }
+
+        function goBack() {
+            document.getElementById('page2').classList.remove('active');
+            document.getElementById('page1').classList.add('active');
+        }
+
+        // Export Render Logic
+        function takeHighResCapture() {
+            const targetNode = document.getElementById('screenshot-target');
+            const nameKey = document.getElementById('username').value.replace(/\s+/g, '_') || 'meta_ui';
+            const btn = document.querySelector('.download-btn');
+            
+            btn.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> Processing HD Canvas...`;
+            btn.disabled = true;
+
+            const config = {
+                scale: 3, // Multiplies canvas pixels for extreme sharpness (Perfect for Mockups)
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff',
+                logging: false
+            };
+
+            setTimeout(() => {
+                html2canvas(targetNode, config).then(canvas => {
+                    const downloadLink = document.createElement('a');
+                    downloadLink.download = `Meta_Center_${nameKey}.png`;
+                    downloadLink.href = canvas.toDataURL('image/png', 1.0);
+                    downloadLink.click();
+
+                    // Restore Button UI
+                    btn.innerHTML = `<i class="fas fa-download"></i> Download Full Image`;
+                    btn.disabled = false;
+                }).catch(error => {
+                    console.error("Canvas export failed:", error);
+                    alert("Error creating file export asset.");
+                    btn.innerHTML = `<i class="fas fa-download"></i> Download Full Image`;
+                    btn.disabled = false;
+                });
+            }, 400);
+        }
+    </script>
+</body>
+</html>

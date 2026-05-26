@@ -224,10 +224,40 @@
             width: 100%;
         }
 
-        .meta-brand img {
-            width: 25px;
-            height: auto;
-            object-fit: contain;
+        /* Pure CSS High-Quality Meta Logo Blueprint */
+        .meta-logo-css {
+            width: 28px;
+            height: 16px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .meta-logo-css::before,
+        .meta-logo-css::after {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border: 3px solid #0064e0;
+            border-radius: 50% 50% 0 50%;
+            transform: rotate(-45deg);
+        }
+
+        .meta-logo-css::before {
+            left: 0;
+        }
+
+        .meta-logo-css::after {
+            right: 0;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(45deg);
+        }
+
+        .meta-brand span {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1c1e21;
+            margin-left: 2px;
         }
 
         .center-title {
@@ -499,7 +529,7 @@
                 <div class="meta-header">
                     <i class="fas fa-times close-icon" onclick="goBack()"></i>
                     <div class="meta-brand">
-                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAADwElEQVR4nO2bXWgcVRTHz7mZ7G6S7m6S2N02tYmppZqYWhS1ChZ90Sot+KIP9U0ffNOn+uKDPvgiIviidH0QfRAsKvZBq6AoKvZB0b5YpEULpYVqm9R8bDbZ7G6S7s7MmXv8kJvdtNlsNrszM7v5w8DAnXvO/879uXvuzN0FiIiIiIiIiIiIiIjIn0m6B8RCHpYGeYAsWpAnXoTqC9AsF8g6XG8ALpEunW9iIQ8B6bshXg7X85Ab7wepM0u8DK7vBy6Bv6fshZIdK9A8B7HRPkgeW0KqN0gNQLIDeALgEshD0l3wQZIsC9I9S+RHYAasXoBrKVDNo8pfgDqVwZt6mD6pB8g7UHeqWc4X9NkaC7mO9NmgO7PkaPZpGshT7HOm07NkvCgP8DTIoVpP7fKAnAInK9+r9dQWb6p2A6oNoE5k66k9vAkCUP0f6gR0Klu9OqfHCHWv7O6wNlK79JhK7fLpAnUig9X+Wkvt8bZ6V+gV6vYssb7SInw96vY+9eHq20SGr0c9uI9f2fMje+gX9eD79qAOfvEAtfv+7f3v3r9/f9SHe9mD3re3/y6vA6C6t9SBeGZ9z3pT95C6Xw86p89mPbyZfR86u66Z9TCr/w706Nl1jZ7dY1YfVnvgGvWwG+7Dvb1v78Nu7X6X92Fve+8SfeN9X6t/m7p7m973mK387/Z6A9TDHrZCPWz2Oqdu9jqnLvawFeqb0Hva/W0X4e7vNfV7R7t/wN/vHffv70v6v7nbe/wV6n7ve9w79N9Wf9u9z99bve/37w959w97v/f698e8v6fe33bv8fce9rAbe9gS9Xvefe66x+oN8bDH6p7Zfc7sh9X9zv6E3ffsn9Nndr8zvM7pM7vPHbvefS/b/8GupGvshUv1vS8XctE8B5rXg3Z74Hp+mhdA6gDS90C8HOBlkAcgXgZcApeByyAvoXm+Ym8wS97SWeIu7oIvkC7bbyXfA2S2D4iFPUT6XojWvK6H5FkgXgKpA6ReAFwG9TIgP0wD6vGg+RzoEajX07zN22reBut+D5q3efveB3Wf0Gf2wV6D6/vM0bF7g8zOEnfR88XN9rM99gZp/M6v7AVvUfV5yY+b5S2qPu/69IAs+byZ7V36P7R33B763y720N5wewBffwz7+mPY1x/Dvmb6N9u9f7vd+7fbe3/bvffv3fvv9t7fdu/fbvdq6vbe397Y2P6W/S3v/+fX+5v+/9W9w6+5d8SvuXdE/O6fRERERERERERERERERERExD/LfwHByt9K1K8bXQAAAABJRU5ErkJggg==" alt="Meta">
+                        <div class="meta-logo-css"></div>
                         <span>Meta</span>
                     </div>
                 </div>
@@ -627,7 +657,7 @@
         function generateProfile() {
             let userInp = document.getElementById('username').value.trim();
 
-            // If left empty, use the default requested username
+            // Default fallback requested username
             if (!userInp) {
                 userInp = "Shadow Joker";
             }
